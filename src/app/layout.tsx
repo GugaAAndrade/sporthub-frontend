@@ -1,8 +1,9 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Koulen } from 'next/font/google'
+import NavBar from './components/navBar'
 import './globals.css'
 
-const inter = Inter({ subsets: ['latin'] })
+const koulen = Koulen({ weight: '400', subsets: ['khmer'] })
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -16,7 +17,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={koulen.className}>
+        <NavBar></NavBar>
+
+        {children}
+      </body>
     </html>
   )
 }
