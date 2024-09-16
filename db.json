@@ -1,0 +1,82 @@
+{
+  "courts": [{
+    "id": 1,
+    "description": "Quadra de futebol society",
+    "imageUrl": "/society3.jpg",
+    "name": "Arena Society Campo Magro",
+    "rating": 4.5,
+    "sports": ["Futebol"],
+    "valor": 100,
+    "horario": ["08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00"]
+  },
+  {
+    "id": 2,
+    "description": "Quadra de basquete",
+    "imageUrl": "/basquete1.jpg",
+    "name": "Quadra Basquete 13 de Julho",
+    "rating": 4.5,
+    "sports": ["Basquete"],
+    "valor": 100,
+    "horario": ["08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00"]
+  },
+  {
+    "id": 3,
+    "description": "Quadra de futebol society",
+    "imageUrl": "/society1.jpg",
+    "name": "Arena A8",
+    "rating": 4.5,
+    "sports": ["Futebol"],
+    "valor": 100,
+    "horario": ["08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00"]
+  },
+  {
+    "id": 4,
+    "description": "Quadra de futebol society",
+    "imageUrl": "/society2.jpg",
+    "name": "Arena HAT TRICK",
+    "rating": 4.5,
+    "sports": ["Futebol"],
+    "valor": 120,
+    "horario": ["08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00"]
+  },
+  {
+    "id": 5,
+    "description": "Quadra de volei de areia",
+    "imageUrl": "/voleiAreia1.jpg",
+    "name": "Arena Beach Sports",
+    "rating": 4.5,
+    "sports": ["Volei"],
+    "valor": 120,
+    "horario": ["08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00"]
+  },
+  {
+    "id": 6,
+    "description": "Quadra de volei para se divertir",
+    "imageUrl": "/voleiAreia2.jpg",
+    "name": "Arena Ramiro",
+    "rating": 4.5,
+    "sports": ["Volei"],
+    "valor": 120,
+    "horario": ["08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00"]
+  },
+  {
+    "id": 7,
+    "description": "Quadra de volei para jogar com os amigos",
+    "imageUrl": "/voleiAreia3.jpg",
+    "name": "AABB",
+    "rating": 4.5,
+    "sports": ["Volei"],
+    "valor": 120,
+    "horario": ["08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00"]
+  },
+  {
+    "id": 8,
+    "description": "Quadra de basquete para rachao",
+    "imageUrl": "/basquete2.jpg",
+    "name": "Quadra Basquete Centro",
+    "rating": 4.5,
+    "sports": ["Basquete"],
+    "valor": 120,
+    "horario": ["08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00"]
+  }]
+}
