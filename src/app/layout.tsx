@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Koulen } from 'next/font/google'
 
 import './globals.css'
+import { AuthProvider } from '@/providers/auth-provider'
 
 const koulen = Koulen({ weight: '400', subsets: ['khmer'] })
 
@@ -17,7 +18,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={koulen.className}>{children}</body>
+      <body className={koulen.className}>
+        <AuthProvider>{children}</AuthProvider>
+      </body>
     </html>
   )
 }

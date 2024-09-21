@@ -1,10 +1,15 @@
 'use client'
 
+import { AuthContext } from '@/contexts/auth-ceontext'
 import Image from 'next/image'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { useContext } from 'react'
 
 export default function NavBar() {
   const router = useRouter()
+
+  const { user } = useContext(AuthContext)
 
   const goToLoginPage = () => {
     router.push('/login')
@@ -65,21 +70,27 @@ export default function NavBar() {
             </button>
           </div>
 
-          <div className="flex items-center gap-7">
-            <button
-              className="text-primary hover:text-primary/50 transition duration-250 "
-              onClick={goToCreateAccountPage}
-            >
-              Criar Conta
-            </button>
+          {user ? (
+            <Link href="/profile" className="flex items-center gap-2">
+              {user.nome}
+            </Link>
+          ) : (
+            <div className="flex items-center gap-7">
+              <button
+                className="text-primary hover:text-primary/50 transition duration-250 "
+                onClick={goToCreateAccountPage}
+              >
+                Criar Conta
+              </button>
 
-            <button
-              onClick={goToLoginPage}
-              className="px-4 py-2 bg-primary text-black rounded-[14px] hover:brightness-95 flex items-center transform active:scale-95"
-            >
-              Entrar
-            </button>
-          </div>
+              <button
+                onClick={goToLoginPage}
+                className="px-4 py-2 bg-primary text-black rounded-[14px] hover:brightness-95 flex items-center transform active:scale-95"
+              >
+                Entrar
+              </button>
+            </div>
+          )}
         </div>
       </div>
       <div className="h-20"></div>

@@ -1,8 +1,17 @@
 'use client'
+
+import { AuthContext } from '@/contexts/auth-ceontext'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
+import { useContext, useState } from 'react'
+
 export default function LoginPage() {
   const router = useRouter()
+
+  const { signIn } = useContext(AuthContext)
+
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
 
   function goToHomePage() {
     router.push('/')
@@ -10,6 +19,15 @@ export default function LoginPage() {
 
   const goToCreateAccountPage = () => {
     router.push('/create-account')
+  }
+
+  function handleSignIn(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+
+    signIn({
+      email,
+      senha: password,
+    })
   }
 
   return (
@@ -42,19 +60,26 @@ export default function LoginPage() {
           </div>
 
           <div className="w-2/3">
-            <form action="" className="flex flex-col gap-4">
+            <form className="flex flex-col gap-4" onSubmit={handleSignIn}>
               <input
                 className="w-full border-2 rounded-lg p-4"
                 type="email"
                 placeholder="Digite seu email"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
               />
               <input
                 className="w-full border-2 rounded-lg p-4"
                 type="password"
                 placeholder="Digite sua senha"
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
               />
 
-              <button className="flex w-full px-4 py-4 bg-primary hover:brightness-95 rounded-lg items-center justify-center text-lg">
+              <button
+                type="submit"
+                className="flex w-full px-4 py-4 bg-primary hover:brightness-95 rounded-lg items-center justify-center text-lg"
+              >
                 Entrar
               </button>
             </form>
