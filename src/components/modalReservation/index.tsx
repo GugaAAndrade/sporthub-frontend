@@ -23,6 +23,8 @@ export default function ReservationModal({
 }: ReservationModalProps) {
   const [selectedHorarios, setSelectedHorarios] = useState<string[]>([])
 
+  const [inputData, setInputData] = useState('')
+
   const handleHorarioClick = (horario: string) => {
     if (selectedHorarios.includes(horario)) {
       setSelectedHorarios(selectedHorarios.filter((h) => h !== horario))
@@ -36,7 +38,7 @@ export default function ReservationModal({
       <div className="p-6 bg-white max-w-xl w-full rounded-lg">
         <div className="flex justify-between">
           <p className="text-primary text-2xl">Reserve sua quadra</p>
-          <X className="size-5" onClick={onClose} />
+          <X className="size-5 cursor-pointer" onClick={onClose} />
         </div>
 
         <p className="text-sm text-gray-400">Quadra</p>
@@ -49,22 +51,38 @@ export default function ReservationModal({
           }).format(court.valor)}
           /hora
         </p>
-        <p className="text-sm text-gray-400">Horários</p>
-        <div className="flex gap-2 overflow-auto justify-center items-center flex-wrap">
-          {court.horario.map((horario) => (
-            <button
-              key={horario}
-              onClick={() => handleHorarioClick(horario)}
-              className={`w-14 py-2 rounded-md border ${
-                selectedHorarios.includes(horario)
-                  ? 'bg-primary text-white'
-                  : 'border-gray-400'
-              }`}
-            >
-              {horario}
-            </button>
-          ))}
-        </div>
+        <p className="text-sm text-gray-400">Data</p>
+        <input
+          type="date"
+          className="text-xl"
+          value={inputData}
+          onChange={(event) => setInputData(event.target.value)}
+        />
+
+        {inputData ? (
+          <div>
+            <p className="text-sm text-gray-400">Horários</p>
+            <div className="flex gap-2 overflow-auto justify-center items-center flex-wrap">
+              {court.horario.map((horario) => (
+                <button
+                  key={horario}
+                  onClick={() => handleHorarioClick(horario)}
+                  className={`w-14 py-2 rounded-md border ${
+                    selectedHorarios.includes(horario)
+                      ? 'bg-primary text-white'
+                      : 'border-gray-400'
+                  }`}
+                >
+                  {horario}
+                </button>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <p className="text-sm text-gray-400">
+            Selecione uma data para ver os Horarios
+          </p>
+        )}
 
         <button className="bg-primary w-full rounded-lg py-2 mt-4">
           Reservar

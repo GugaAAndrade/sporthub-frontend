@@ -10,16 +10,20 @@ export default function NavBar() {
     router.push('/login')
   }
 
-  const goToEsportsPage = () => {
-    router.push('/esportes')
+  const goToCreateAccountPage = () => {
+    router.push('/create-account')
+  }
+
+  const goToCourtsPage = () => {
+    router.push('/courts')
   }
 
   const goToHomePage = () => {
     router.push('/')
   }
 
-  const goToEstabelecimentosPage = () => {
-    router.push('/estabelecimentos')
+  const goToAboutUsPage = () => {
+    router.push('/about-us')
   }
   return (
     <>
@@ -49,22 +53,22 @@ export default function NavBar() {
             </button>
             <button
               className="hover:text-primary transition duration-250"
-              onClick={goToEsportsPage}
+              onClick={goToCourtsPage}
             >
-              Esportes
+              Quadras
             </button>
             <button
               className="hover:text-primary transition duration-250"
-              onClick={goToEstabelecimentosPage}
+              onClick={goToAboutUsPage}
             >
-              Estabelecimento
+              Sobre
             </button>
           </div>
 
           <div className="flex items-center gap-7">
             <button
               className="text-primary hover:text-primary/50 transition duration-250 "
-              onClick={goToLoginPage}
+              onClick={goToCreateAccountPage}
             >
               Criar Conta
             </button>

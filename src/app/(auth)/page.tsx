@@ -5,8 +5,8 @@ import { useRouter } from 'next/navigation'
 export default function Home() {
   const router = useRouter()
 
-  const goToEsportesPage = () => {
-    router.push('/esportes')
+  const goToCourtsPage = () => {
+    router.push('/courts')
   }
 
   const goToLoginPage = () => {
@@ -14,7 +14,7 @@ export default function Home() {
   }
 
   const handleRedirect = (sportChoice: string) => {
-    router.push(`/esportes?sport=${sportChoice}`)
+    router.push(`/courts?sport=${sportChoice}`)
   }
 
   return (
@@ -59,7 +59,7 @@ export default function Home() {
           </div>
           <div className="flex w-full justify-end pb-24">
             <button
-              onClick={goToEsportesPage}
+              onClick={goToCourtsPage}
               className="py-3 px-7 bg-primary rounded-xl shadow-md transform active:scale-95 transition-transform hover:brightness-95"
             >
               Reservar Espaco

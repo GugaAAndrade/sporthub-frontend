@@ -1,14 +1,14 @@
 'use client'
 
 import CourtCard from '@/components/courtCard'
+import FilterTag from '@/components/filterTag'
 import ReservationModal, { Court } from '@/components/modalReservation'
-import SportTag from '@/components/sportTag'
 import { api } from '@/services/api'
 import { LoaderCircle } from 'lucide-react'
 import { useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
-export default function EsportesPage() {
+export default function CourtsPage() {
   const searchParams = useSearchParams()
 
   const sport = searchParams.get('sport')
@@ -45,12 +45,12 @@ export default function EsportesPage() {
           Buscando por <span className="text-primary">{sport || 'todos'}</span>
         </div>
         <div className="flex gap-2">
-          <SportTag sport=""></SportTag>
-          <SportTag sport="Futebol"></SportTag>
-          <SportTag sport="Volei"></SportTag>
-          <SportTag sport="Basquete"></SportTag>
+          <FilterTag sport=""></FilterTag>
+          <FilterTag sport="Futebol"></FilterTag>
+          <FilterTag sport="Volei"></FilterTag>
+          <FilterTag sport="Basquete"></FilterTag>
         </div>
-        <div className="flex flex-col w-full gap-8">
+        <div className="flex flex-col w-full gap-6">
           {courts.length > 0 ? (
             courts
               .filter((court) => !sport || court.sports.includes(sport))

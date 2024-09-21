@@ -1,11 +1,11 @@
 import { Shell } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
-interface SportTagProps {
+interface FilterTagProps {
   sport: string
 }
 
-export default function SportTag({ sport }: SportTagProps) {
+export default function FilterTag({ sport }: FilterTagProps) {
   const router = useRouter()
   const handleRedirect = (sportChoice: string) => {
     router.push(`/courts?sport=${sportChoice}`)

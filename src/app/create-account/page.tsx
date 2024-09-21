@@ -3,13 +3,12 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 export default function LoginPage() {
   const router = useRouter()
-
   function goToHomePage() {
     router.push('/')
   }
 
-  const goToCreateAccountPage = () => {
-    router.push('/create-account')
+  const goToLoginPage = () => {
+    router.push('/login')
   }
 
   return (
@@ -37,12 +36,17 @@ export default function LoginPage() {
           </div>
 
           <div className="w-2/3">
-            <p className="text-4xl">SEJA BEM-VINDO</p>
-            <p>entre com sua conta para continuar</p>
+            <p className="text-4xl">Cadastre-se</p>
+            <p>Junte-se a nos e descubra um mundo de possibilidades</p>
           </div>
 
           <div className="w-2/3">
             <form action="" className="flex flex-col gap-4">
+              <input
+                className="w-full border-2 rounded-lg p-4"
+                type="text"
+                placeholder="Digite seu nome"
+              />
               <input
                 className="w-full border-2 rounded-lg p-4"
                 type="email"
@@ -53,9 +57,14 @@ export default function LoginPage() {
                 type="password"
                 placeholder="Digite sua senha"
               />
+              <input
+                className="w-full border-2 rounded-lg p-4"
+                type="password"
+                placeholder="confirme sua senha"
+              />
 
               <button className="flex w-full px-4 py-4 bg-primary hover:brightness-95 rounded-lg items-center justify-center text-lg">
-                Entrar
+                Criar Conta
               </button>
             </form>
           </div>
@@ -74,16 +83,16 @@ export default function LoginPage() {
                 quality={100}
                 priority
               />
-              Entrar com Google
+              Registrar-se com Google
             </button>
           </div>
 
           <div>
-            Nao tem conta?{' '}
-            <button onClick={goToCreateAccountPage} className="text-blue-600">
+            Ja tem conta?{' '}
+            <button onClick={goToLoginPage} className="text-blue-600">
               Clique Aqui
             </button>{' '}
-            para criar
+            para entrar
           </div>
         </div>
         <div className="w-1/2 h-screen flex justify-center p-6">
