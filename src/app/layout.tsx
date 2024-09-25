@@ -3,6 +3,7 @@ import { Koulen } from 'next/font/google'
 
 import './globals.css'
 import { AuthProvider } from '@/providers/auth-provider'
+import { Toaster } from 'react-hot-toast'
 
 const koulen = Koulen({ weight: '400', subsets: ['khmer'] })
 
@@ -19,6 +20,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={koulen.className}>
+        <Toaster position="top-right" reverseOrder={false} />
+
         <AuthProvider>{children}</AuthProvider>
       </body>
     </html>

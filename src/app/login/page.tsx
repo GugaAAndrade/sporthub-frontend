@@ -3,10 +3,11 @@
 import { AuthContext } from '@/contexts/auth-ceontext'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 
 export default function LoginPage() {
   const router = useRouter()
+  const { user } = useContext(AuthContext)
 
   const { signIn } = useContext(AuthContext)
 
@@ -20,6 +21,12 @@ export default function LoginPage() {
   const goToCreateAccountPage = () => {
     router.push('/create-account')
   }
+
+  useEffect(() => {
+    if (user?.roles === 'ADMIN') {
+      router.push('/admin')
+    }
+  }, [user, router])
 
   function handleSignIn(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -84,12 +91,12 @@ export default function LoginPage() {
               </button>
             </form>
           </div>
-          <div className="flex items-center justify-center gap-4 w-2/3">
+          {/* <div className="flex items-center justify-center gap-4 w-2/3">
             <div className="h-px w-full bg-black"></div>
             ou
             <div className="h-px w-full  bg-black"></div>
-          </div>
-          <div className="w-2/3">
+          </div> */}
+          {/* <div className="w-2/3">
             <button className="flex w-full p-4 border-2 rounded-lg items-center justify-center text-lg gap-2">
               <Image
                 src="/google_icon.svg"
@@ -101,7 +108,7 @@ export default function LoginPage() {
               />
               Entrar com Google
             </button>
-          </div>
+          </div> */}
 
           <div>
             Nao tem conta?{' '}

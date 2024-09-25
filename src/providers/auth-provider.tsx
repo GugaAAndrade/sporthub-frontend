@@ -40,7 +40,7 @@ function AuthProvider({ children }: Readonly<AuthProviderProps>) {
 
     Cookies.remove('sportshub@token')
     Cookies.remove('sportshub@user')
-    router.push('/auth/login')
+    router.push('/login')
   }
 
   return (

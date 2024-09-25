@@ -10,7 +10,7 @@ import { useEffect, useState } from 'react'
 import Cookies from 'js-cookie'
 
 export default function CourtsPage() {
-  const { replace, push } = useRouter()
+  const { replace } = useRouter()
   const searchParams = useSearchParams()
   const pathname = usePathname()
 
@@ -55,11 +55,6 @@ export default function CourtsPage() {
   }
 
   useEffect(() => {
-    if (!Cookies.get('sportshub@token')) {
-      push('/login')
-      return
-    }
-
     getCourts()
   }, [])
 
@@ -93,7 +88,6 @@ export default function CourtsPage() {
                 rating={court.nota}
                 sports={court.esportes}
                 handleReserveCourt={() => handleReserveCourt(court)}
-                handleSetSport={setSportChoice}
               ></CourtCard>
             ))
           ) : loading ? (

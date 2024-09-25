@@ -1,18 +1,22 @@
 import { Star } from 'lucide-react'
-import Image from 'next/image'
-import SportTag from '../sportTag'
 import { MouseEventHandler } from 'react'
+import FilterTag from '../filterTag'
 
 interface CourtCardProps {
   description: string
   imageUrl: string
   name: string
   rating: number
-  sports: string[]
+  sports: {
+    id: string
+    nome: string
+  }[]
   handleReserveCourt: MouseEventHandler<HTMLButtonElement>
+  handleSetSport: (sport: string) => void
 }
 
 export default function CourtCard({
+  handleSetSport,
   description,
   imageUrl,
   name,
@@ -23,14 +27,10 @@ export default function CourtCard({
   return (
     <div className="flex w-full h-full items-center p-3 border rounded-xl gap-3">
       <div className=" flex items-center justify-center rounded-lg">
-        <Image
-          className="w-auto h-full rounded-lg"
+        <img
+          className="h-full rounded-lg w-[256px]"
           src={imageUrl}
           alt="imagemQuadra"
-          width={256}
-          height={256}
-          quality={100}
-          priority
         />
       </div>
       <div className="flex h-full flex-1 justify-between flex-col gap-5">
@@ -45,7 +45,11 @@ export default function CourtCard({
 
           <div className=" flex flex-row items-center gap-2 ">
             {sports.map((sport) => (
-              <SportTag key={sport} sport={sport}></SportTag>
+              <FilterTag
+                handleSetSport={handleSetSport}
+                key={sport.id}
+                sport={sport.nome}
+              ></FilterTag>
             ))}
           </div>
 

@@ -1,6 +1,7 @@
 'use client'
 
 import { AuthContext } from '@/contexts/auth-ceontext'
+import { LogOut } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -9,7 +10,7 @@ import { useContext } from 'react'
 export default function NavBar() {
   const router = useRouter()
 
-  const { user } = useContext(AuthContext)
+  const { user, signOut } = useContext(AuthContext)
 
   const goToLoginPage = () => {
     router.push('/login')
@@ -49,31 +50,42 @@ export default function NavBar() {
             </h1>
           </button>
 
-          <div className="flex items-center gap-9 ">
-            <button
-              className="hover:text-primary transition duration-250"
-              onClick={goToHomePage}
-            >
-              Home
-            </button>
-            <button
-              className="hover:text-primary transition duration-250"
-              onClick={goToCourtsPage}
-            >
-              Quadras
-            </button>
-            <button
-              className="hover:text-primary transition duration-250"
-              onClick={goToAboutUsPage}
-            >
-              Sobre
-            </button>
-          </div>
+          {user?.roles !== 'ADMIN' && (
+            <div className="flex items-center gap-9 ">
+              <button
+                className="hover:text-primary transition duration-250"
+                onClick={goToHomePage}
+              >
+                Home
+              </button>
+              <button
+                className="hover:text-primary transition duration-250"
+                onClick={goToCourtsPage}
+              >
+                Quadras
+              </button>
+              <button
+                className="hover:text-primary transition duration-250"
+                onClick={goToAboutUsPage}
+              >
+                Sobre
+              </button>
+            </div>
+          )}
 
           {user ? (
-            <Link href="/profile" className="flex items-center gap-2">
-              {user.nome}
-            </Link>
+            <div className="flex gap-2 items-center">
+              <Link href="/profile" className="flex items-center gap-2">
+                {user.nome}
+              </Link>
+
+              <button
+                onClick={signOut}
+                className="px-4 py-2 bg-primary text-black rounded-[14px] hover:brightness-95 flex items-center transform active:scale-95"
+              >
+                <LogOut className="size-4" />
+              </button>
+            </div>
           ) : (
             <div className="flex items-center gap-7">
               <button

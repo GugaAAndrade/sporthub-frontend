@@ -9,6 +9,7 @@ type UserAuthType = {
   id: string
   nome: string
   email: string
+  roles: string
 }
 
 interface AuthContextType {
