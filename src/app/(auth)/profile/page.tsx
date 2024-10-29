@@ -6,6 +6,8 @@ import Image from 'next/image'
 import { useContext, useEffect, useState } from 'react'
 import Cookies from 'js-cookie'
 import { Court } from '@/components/modalReservation'
+import CreateGroupModal from '@/components/CreateGroupModal' // Import do modal
+import Link from 'next/link'
 
 export interface Usuario {
   id: string
@@ -31,6 +33,13 @@ export interface UserReservationInfo {
   }
 }
 
+export interface Group {
+  id: string
+  nome: string
+  descricao: string
+  // Adicione outros campos se necessário
+}
+
 export default function Profile() {
   const { user } = useContext(AuthContext)
   const [userInfo, setUserInfo] = useState<Usuario>()
@@ -38,10 +47,13 @@ export default function Profile() {
     UserReservationInfo[]
   >([])
   const [courts, setCourts] = useState<Court[]>([])
+  const [userGroups, setUserGroups] = useState<Group[]>([])
 
   const [unicReservationsCourts, setUnicReservationsCourts] = useState<
     string[]
   >([])
+
+  const [isCreateGroupModalOpen, setIsCreateGroupModalOpen] = useState(false)
 
   function getUser() {
     if (!user) return
@@ -76,10 +88,28 @@ export default function Profile() {
       })
   }
 
+  function getUserGroups() {
+    if (!user) return
+
+    api
+      .get(`/grupo/usuario/${user.id}`, {
+        headers: {
+          Authorization: `Bearer ${Cookies.get('sportshub@token')}`,
+        },
+      })
+      .then((response) => {
+        setUserGroups(response.data)
+      })
+      .catch((error) => {
+        console.error('Erro ao buscar grupos do usuário:', error)
+      })
+  }
+
   useEffect(() => {
     console.log(user)
     getUser()
     getUserReserves()
+    getUserGroups()
   }, [user])
 
   useEffect(() => {
@@ -98,9 +128,23 @@ export default function Profile() {
     getCourts()
   }, [unicReservationsCourts])
 
+  const handleOpenCreateGroupModal = () => {
+    setIsCreateGroupModalOpen(true)
+  }
+
+  const handleCloseCreateGroupModal = () => {
+    setIsCreateGroupModalOpen(false)
+  }
+
+  const handleGroupCreated = () => {
+    // Atualiza a lista de grupos após a criação de um novo grupo
+    getUserGroups()
+  }
+
   return (
     <div className="flex min-h-[calc(100vh-11rem)] py-16 justify-center w-full">
       <div className="max-w-5xl w-full flex flex-col items-center gap-5">
+        {/* Seção de Perfil */}
         <div className=" w-2/3 border border-black rounded-lg gap-4 flex flex-col p-4">
           <div className="flex start justify-between w-full gap-3">
             <div className="flex items-center gap-3">
@@ -155,6 +199,7 @@ export default function Profile() {
           </div>
         </div>
 
+        {/* Seção de Quadras Reservadas */}
         <div className="w-2/3 border border-black rounded-lg gap-4 flex flex-col p-4">
           <p className="text-lg">Quadras Reservadas</p>
 
@@ -197,7 +242,55 @@ export default function Profile() {
             <p>Você não possui quadras reservadas</p>
           )}
         </div>
+
+        {/* Seção de Grupos */}
+        <div className="w-2/3 border border-black rounded-lg gap-4 flex flex-col p-4">
+          <div className="flex justify-between items-center">
+            <p className="text-lg">Grupos</p>
+            <button
+              onClick={handleOpenCreateGroupModal}
+              className="bg-blue-500 text-white px-4 py-2 rounded-lg"
+            >
+              Criar Grupo
+            </button>
+          </div>
+
+          {userGroups.length > 0 ? (
+            userGroups.map((group) => (
+              <div
+                key={group.id}
+                className="flex items-center gap-2 justify-between"
+              >
+                <Link href={`/grupo/${group.id}`}>
+                  <div className="flex gap-2 items-center cursor-pointer">
+                    <div className="w-14 h-14 rounded-full bg-gray-300 flex items-center justify-center">
+                      {/* Pode adicionar uma imagem ou ícone representativo do grupo aqui */}
+                      <span className="text-white text-xl">
+                        {group.nome.charAt(0)}
+                      </span>
+                    </div>
+                    <p className="flex flex-col">
+                      <span className="font-semibold">{group.nome}</span>
+                      <span className="text-sm text-gray-600">
+                        {group.descricao}
+                      </span>
+                    </p>
+                  </div>
+                </Link>
+              </div>
+            ))
+          ) : (
+            <p>Você não participa de nenhum grupo.</p>
+          )}
+        </div>
       </div>
+
+      {/* Modal de Criação de Grupo */}
+      <CreateGroupModal
+        isOpen={isCreateGroupModalOpen}
+        onClose={handleCloseCreateGroupModal}
+        onGroupCreated={handleGroupCreated}
+      />
     </div>
   )
 }
