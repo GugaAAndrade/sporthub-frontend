@@ -3,17 +3,18 @@ import { api } from '@/services/api'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
-export default function CreateAccountPage() {
+export default function CreateStablishmentAccountPage() {
   const router = useRouter()
 
+  const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [passwordConfirmed, setPasswordConfirmed] = useState('')
-  const [cpf, setCpf] = useState('')
-  const [name, setName] = useState('')
-  const [dateOfBirth, setDateOfBirth] = useState('')
-  const [genero, setGenero] = useState('')
-  const [telefone, setTelefone] = useState('')
+  const [cnpj, setCnpj] = useState('')
+  const [contact, setContact] = useState('')
+  const [address, setAddress] = useState('')
+  const [cep, setCep] = useState('')
+  const [description, setDescription] = useState('')
 
   function goToHomePage() {
     router.push('/')
@@ -23,21 +24,18 @@ export default function CreateAccountPage() {
     router.push('/login')
   }
 
-  const goToCreateStablishmentAccount = () => {
-    router.push('/create-stablishment-account')
-  }
-
   function handleCreateAccount(event: React.FormEvent) {
     event.preventDefault()
 
-    api.post('/auth/register', {
+    api.post('/auth/register/estabelecimento', {
       nome: name,
       email,
       senha: password,
-      cpf,
-      dataNascimento: dateOfBirth,
-      genero,
-      telefone,
+      cnpj,
+      contato: contact,
+      endereco: address,
+      cep,
+      descricao: description,
     })
   }
 
@@ -79,14 +77,14 @@ export default function CreateAccountPage() {
                 <input
                   className="w-1/2 border-2 rounded-lg p-4"
                   type="text"
-                  placeholder="Digite seu nome"
+                  placeholder="Digite o nome do estabelecimento"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                 />
                 <input
                   className="w-1/2 border-2 rounded-lg p-4"
                   type="email"
-                  placeholder="Digite seu email"
+                  placeholder="Digite o email do estabelecimento"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
@@ -96,38 +94,33 @@ export default function CreateAccountPage() {
                 <input
                   className="w-1/2 border-2 rounded-lg p-4"
                   type="text"
-                  placeholder="Digite seu CPF"
-                  value={cpf}
-                  onChange={(e) => setCpf(e.target.value)}
+                  placeholder="Digite o CNPJ"
+                  value={cnpj}
+                  onChange={(e) => setCnpj(e.target.value)}
                 />
                 <input
                   className="w-1/2 border-2 rounded-lg p-4"
-                  type="date"
-                  placeholder="Digite sua data de nascimento"
-                  value={dateOfBirth}
-                  onChange={(e) => setDateOfBirth(e.target.value)}
+                  type="text"
+                  placeholder="Digite o endereço do estabelecimento"
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
                 />
               </div>
 
               <div className="flex gap-4">
-                <select
-                  className="w-1/2 border-2 rounded-lg p-4"
-                  value={genero}
-                  onChange={(e) => setGenero(e.target.value)}
-                >
-                  <option value="" disabled>
-                    Selecione seu gênero
-                  </option>
-                  <option value="masculino">Masculino</option>
-                  <option value="feminino">Feminino</option>
-                  <option value="outro">Outro</option>
-                </select>
                 <input
                   className="w-1/2 border-2 rounded-lg p-4"
                   type="tel"
-                  placeholder="Digite seu telefone"
-                  value={telefone}
-                  onChange={(e) => setTelefone(e.target.value)}
+                  placeholder="Digite o telefone para contato"
+                  value={contact}
+                  onChange={(e) => setContact(e.target.value)}
+                />
+                <input
+                  className="w-1/2 border-2 rounded-lg p-4"
+                  type="tel"
+                  placeholder="Digite o CEP do estabelecimento"
+                  value={cep}
+                  onChange={(e) => setCep(e.target.value)}
                 />
               </div>
 
@@ -148,6 +141,14 @@ export default function CreateAccountPage() {
                 />
               </div>
 
+              <input
+                className="w-full border-2 rounded-lg p-4"
+                type="text"
+                placeholder="Descrição do estabelecimento"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              />
+
               <button
                 type="submit"
                 className="flex w-full px-4 py-4 bg-primary hover:brightness-95 rounded-lg items-center justify-center text-lg"
@@ -157,24 +158,12 @@ export default function CreateAccountPage() {
             </form>
           </div>
 
-          <div className="flex flex-col justify-center items-center gap-2">
-            <div>
-              Tem um estabelecimento?{' '}
-              <button
-                onClick={goToCreateStablishmentAccount}
-                className="text-blue-600"
-              >
-                Clique Aqui
-              </button>{' '}
-              para fazer parte da nossa rede!
-            </div>
-            <div>
-              Ja tem conta?{' '}
-              <button onClick={goToLoginPage} className="text-blue-600">
-                Clique Aqui
-              </button>{' '}
-              para entrar
-            </div>
+          <div>
+            Já tem conta?{' '}
+            <button onClick={goToLoginPage} className="text-blue-600">
+              Clique Aqui
+            </button>{' '}
+            para entrar
           </div>
         </div>
 

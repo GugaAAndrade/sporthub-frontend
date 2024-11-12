@@ -1,8 +1,9 @@
 // components/CreateGroupModal.tsx
 
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { api } from '@/services/api'
 import Cookies from 'js-cookie'
+import { AuthContext } from '@/contexts/auth-ceontext'
 
 interface CreateGroupModalProps {
   isOpen: boolean
@@ -15,6 +16,8 @@ export default function CreateGroupModal({
   onClose,
   onGroupCreated,
 }: CreateGroupModalProps) {
+  const { user } = useContext(AuthContext)
+
   const [groupName, setGroupName] = useState('')
   const [groupDescription, setGroupDescription] = useState('')
   const [loading, setLoading] = useState(false)
@@ -29,6 +32,7 @@ export default function CreateGroupModal({
         {
           nome: groupName,
           descricao: groupDescription,
+          usuarios: [user?.id],
         },
         {
           headers: {

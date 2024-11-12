@@ -23,7 +23,7 @@ function AuthProvider({ children }: Readonly<AuthProviderProps>) {
   }, [router])
 
   async function signIn(data: SignInData) {
-    return api.post('/auth/login', data).then((response) => {
+    return api.post('/auth/login/usuario', data).then((response) => {
       Cookies.set('sportshub@token', response.data.token)
       Cookies.set('sportshub@user', JSON.stringify(response.data.usuario))
 

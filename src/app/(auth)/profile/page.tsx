@@ -92,13 +92,13 @@ export default function Profile() {
     if (!user) return
 
     api
-      .get(`/grupo/usuario/${user.id}`, {
+      .get(`/grupo`, {
         headers: {
           Authorization: `Bearer ${Cookies.get('sportshub@token')}`,
         },
       })
       .then((response) => {
-        setUserGroups(response.data)
+        setUserGroups(response.data.content)
       })
       .catch((error) => {
         console.error('Erro ao buscar grupos do usuário:', error)
