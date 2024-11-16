@@ -8,7 +8,7 @@ import Cookies from 'js-cookie'
 interface EstablishmentContainerProps {
   establishment: EstablishmentWithCourts
   setSelectedCourt: (court: Court) => void
-  setSelectedStablishment: (establishment: EstablishmentWithCourts) => void
+  setSelectedEstablishment: (establishment: EstablishmentWithCourts) => void
   setSelectedButtonEditEstablishment: (value: Establishment) => void
   selectCourtId: (courtId: string) => void
 }
@@ -16,13 +16,13 @@ interface EstablishmentContainerProps {
 export default function EstablishmentContainer({
   establishment,
   setSelectedCourt,
-  setSelectedStablishment,
+  setSelectedEstablishment,
   setSelectedButtonEditEstablishment,
   selectCourtId,
 }: EstablishmentContainerProps) {
   function handleSelectedCourt(court: Court) {
     setSelectedCourt(court)
-    setSelectedStablishment(establishment)
+    setSelectedEstablishment(establishment)
   }
 
   function handleSelectedButtonEditEstablishment() {
@@ -46,7 +46,7 @@ export default function EstablishmentContainer({
         <div className="flex gap-1">
           <button
             className="flex gap-1 items-center text-base bg-green-100 py-1 px-2 rounded-lg"
-            onClick={() => setSelectedStablishment(establishment)}
+            onClick={() => setSelectedEstablishment(establishment)}
           >
             {' '}
             <Plus className="size-4" />

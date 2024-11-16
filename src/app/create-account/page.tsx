@@ -23,8 +23,8 @@ export default function CreateAccountPage() {
     router.push('/login')
   }
 
-  const goToCreateStablishmentAccount = () => {
-    router.push('/create-stablishment-account')
+  const goToCreateEstablishmentAccount = () => {
+    router.push('/create-establishment-account')
   }
 
   function handleCreateAccount(event: React.FormEvent) {
@@ -161,7 +161,7 @@ export default function CreateAccountPage() {
             <div>
               Tem um estabelecimento?{' '}
               <button
-                onClick={goToCreateStablishmentAccount}
+                onClick={goToCreateEstablishmentAccount}
                 className="text-blue-600"
               >
                 Clique Aqui

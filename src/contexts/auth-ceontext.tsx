@@ -9,12 +9,12 @@ type UserAuthType = {
   id: string
   nome: string
   email: string
-  roles: string
+  role: string
 }
 
 interface AuthContextType {
   user: UserAuthType | null
-  signIn: (data: SignInData) => Promise<void>
+  signIn: (data: SignInData, route: string) => Promise<void>
   signOut: () => void
 }
 

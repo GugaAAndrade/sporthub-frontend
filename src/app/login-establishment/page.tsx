@@ -5,7 +5,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useContext, useEffect, useState } from 'react'
 
-export default function LoginPage() {
+export default function LoginEstablishmentPage() {
   const router = useRouter()
   const { user } = useContext(AuthContext)
 
@@ -36,7 +36,7 @@ export default function LoginPage() {
         email,
         senha: password,
       },
-      'usuario',
+      'estabelecimento',
     )
   }
 

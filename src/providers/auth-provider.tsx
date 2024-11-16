@@ -22,12 +22,19 @@ function AuthProvider({ children }: Readonly<AuthProviderProps>) {
     }
   }, [router])
 
-  async function signIn(data: SignInData) {
-    return api.post('/auth/login/usuario', data).then((response) => {
+  async function signIn(data: SignInData, route: string) {
+    return api.post(`/auth/login/${route}`, data).then((response) => {
       Cookies.set('sportshub@token', response.data.token)
-      Cookies.set('sportshub@user', JSON.stringify(response.data.usuario))
-
-      setUser(response.data.usuario)
+      if (route === 'usuario') {
+        Cookies.set('sportshub@user', JSON.stringify(response.data.usuario))
+        setUser(response.data.usuario)
+      } else {
+        Cookies.set(
+          'sportshub@user',
+          JSON.stringify(response.data.estabelecimento),
+        )
+        setUser(response.data.estabelecimento)
+      }
 
       router.push('/')
     })

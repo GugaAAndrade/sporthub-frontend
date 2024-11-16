@@ -39,7 +39,7 @@ export default function EstablishmentPage() {
   )
   const [loading, setLoading] = useState(true)
   const [selectedCourt, setSelectedCourt] = useState<Court | null>(null)
-  const [selectedStablishment, setSelectedStablishment] =
+  const [selectedEstablishment, setSelectedEstablishment] =
     useState<Establishment | null>(null)
 
   const [selectedButtonEditEstablishment, setSelectedButtonEditEstablishment] =
@@ -75,7 +75,7 @@ export default function EstablishmentPage() {
     if (!user) {
       return
     }
-    if (user?.roles !== 'ADMIN') {
+    if (user?.role !== 'ESTABLISHMENT') {
       router.push('/')
     }
   }, [user, router])
@@ -102,7 +102,7 @@ export default function EstablishmentPage() {
               <EstablishmentContainer
                 establishment={estab}
                 setSelectedCourt={setSelectedCourt}
-                setSelectedStablishment={setSelectedStablishment}
+                setSelectedEstablishment={setSelectedEstablishment}
                 setSelectedButtonEditEstablishment={
                   setSelectedButtonEditEstablishment
                 }
@@ -124,15 +124,15 @@ export default function EstablishmentPage() {
           court={selectedCourt}
           onClose={() => {
             setSelectedCourt(null)
-            setSelectedStablishment(null)
+            setSelectedEstablishment(null)
           }}
         />
       )}
 
-      {selectedStablishment && !selectedCourt && (
+      {selectedEstablishment && !selectedCourt && (
         <ModalCreateCourt
-          estabelecimentoId={selectedStablishment.id}
-          onClose={() => setSelectedStablishment(null)}
+          estabelecimentoId={selectedEstablishment.id}
+          onClose={() => setSelectedEstablishment(null)}
         />
       )}
 
