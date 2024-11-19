@@ -1,15 +1,12 @@
 import { Court } from '../modalReservation'
 import CourtContainer from '../courtContainer'
-import { Pencil, Plus, Trash } from 'lucide-react'
-import { Establishment, EstablishmentWithCourts } from '@/app/(auth)/admin/page'
-import { api } from '@/services/api'
-import Cookies from 'js-cookie'
+import { Plus } from 'lucide-react'
+import { EstablishmentWithCourts } from '@/app/(auth)/admin/page'
 
 interface EstablishmentContainerProps {
-  establishment: EstablishmentWithCourts
+  establishment: EstablishmentWithCourts | null
   setSelectedCourt: (court: Court) => void
   setSelectedEstablishment: (establishment: EstablishmentWithCourts) => void
-  setSelectedButtonEditEstablishment: (value: Establishment) => void
   selectCourtId: (courtId: string) => void
 }
 
@@ -17,26 +14,15 @@ export default function EstablishmentContainer({
   establishment,
   setSelectedCourt,
   setSelectedEstablishment,
-  setSelectedButtonEditEstablishment,
   selectCourtId,
 }: EstablishmentContainerProps) {
   function handleSelectedCourt(court: Court) {
     setSelectedCourt(court)
-    setSelectedEstablishment(establishment)
+    setSelectedEstablishment(establishment as EstablishmentWithCourts)
   }
 
-  function handleSelectedButtonEditEstablishment() {
-    setSelectedButtonEditEstablishment(establishment)
-  }
-
-  function handleDeleteEstablishment() {
-    api.delete(`/estabelecimento/${establishment.id}`, {
-      headers: {
-        Authorization: `Bearer ${Cookies.get('sportshub@token')}`,
-      },
-    })
-
-    window.location.reload()
+  if (!establishment) {
+    return <div>Nenhum estabelecimento encontrado</div>
   }
 
   return (
@@ -51,23 +37,6 @@ export default function EstablishmentContainer({
             {' '}
             <Plus className="size-4" />
             Adicionar Quadra
-          </button>
-
-          <button
-            onClick={handleSelectedButtonEditEstablishment}
-            className="flex gap-1 items-center text-base bg-blue-100 py-1 px-2 rounded-lg"
-          >
-            {' '}
-            <Pencil className="size-4" />
-            Editar Estabelecimento
-          </button>
-          <button
-            onClick={handleDeleteEstablishment}
-            className="flex gap-1 items-center justify-center text-base bg-red-100 py-1 px-2 rounded-lg"
-          >
-            {' '}
-            <Trash className="size-4" />
-            Deletar Estabelecimento
           </button>
         </div>
       </div>

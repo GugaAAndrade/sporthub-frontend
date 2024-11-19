@@ -23,7 +23,7 @@ export default function LoginPage() {
   }
 
   useEffect(() => {
-    if (user?.role === 'ADMIN') {
+    if (user?.role === 'ESTABLISHMENT') {
       router.push('/admin')
     }
   }, [user, router])
@@ -113,12 +113,24 @@ export default function LoginPage() {
             </button>
           </div> */}
 
-          <div>
-            Nao tem conta?{' '}
-            <button onClick={goToCreateAccountPage} className="text-blue-600">
-              Clique Aqui
-            </button>{' '}
-            para criar
+          <div className="flex flex-col gap-4 items-center">
+            <div>
+              Nao tem conta?{' '}
+              <button onClick={goToCreateAccountPage} className="text-blue-600">
+                Clique Aqui
+              </button>{' '}
+              para criar
+            </div>
+
+            <div>
+              <button
+                onClick={() => router.push('/login-establishment')}
+                className="text-blue-600"
+              >
+                Entrar
+              </button>{' '}
+              como estabelecimento
+            </div>
           </div>
         </div>
         <div className="w-1/2 h-screen flex justify-center p-6">

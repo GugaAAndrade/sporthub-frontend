@@ -50,7 +50,7 @@ export default function NavBar() {
             </h1>
           </button>
 
-          {user?.roles !== 'ADMIN' && (
+          {user?.role !== 'ESTABLISHMENT' && (
             <div className="flex items-center gap-9 ">
               <button
                 className="hover:text-primary transition duration-250"
@@ -75,9 +75,18 @@ export default function NavBar() {
 
           {user ? (
             <div className="flex gap-2 items-center">
-              <Link href="/profile" className="flex items-center gap-2">
+              {/* <Link href="/profile" className="flex items-center gap-2">
                 {user.nome}
-              </Link>
+              </Link> */}
+              {user?.role === 'ESTABLISHMENT' ? (
+                <Link href="/admin" className="flex items-center gap-2">
+                  {user.nome}
+                </Link>
+              ) : (
+                <Link href="/profile" className="flex items-center gap-2">
+                  {user.nome}
+                </Link>
+              )}
 
               <button
                 onClick={signOut}

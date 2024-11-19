@@ -261,7 +261,7 @@ export default function Profile() {
                 key={group.id}
                 className="flex items-center gap-2 justify-between"
               >
-                <Link href={`/grupo/${group.id}`}>
+                <Link href={`/group/${group.id}`}>
                   <div className="flex gap-2 items-center cursor-pointer">
                     <div className="w-14 h-14 rounded-full bg-gray-300 flex items-center justify-center">
                       {/* Pode adicionar uma imagem ou ícone representativo do grupo aqui */}

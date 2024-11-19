@@ -23,7 +23,7 @@ export default function LoginEstablishmentPage() {
   }
 
   useEffect(() => {
-    if (user?.role === 'ADMIN') {
+    if (user?.role === 'ESTABLISHMENT') {
       router.push('/admin')
     }
   }, [user, router])

@@ -30,15 +30,19 @@ export default function CreateAccountPage() {
   function handleCreateAccount(event: React.FormEvent) {
     event.preventDefault()
 
-    api.post('/auth/register', {
-      nome: name,
-      email,
-      senha: password,
-      cpf,
-      dataNascimento: dateOfBirth,
-      genero,
-      telefone,
-    })
+    api
+      .post('/auth/register/usuario', {
+        nome: name,
+        email,
+        senha: password,
+        cpf,
+        dataNascimento: dateOfBirth,
+        genero,
+        telefone,
+      })
+      .then(() => {
+        router.push('/login')
+      })
   }
 
   return (

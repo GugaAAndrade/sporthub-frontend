@@ -4,13 +4,12 @@ import { api } from '@/services/api'
 import { useContext, useEffect, useState } from 'react'
 import Cookies from 'js-cookie'
 import EstablishmentContainer from '@/components/establishmentContainer'
-import { LoaderCircle } from 'lucide-react'
+import { Pencil } from 'lucide-react'
 import { Court } from '@/components/modalReservation'
 import { AuthContext } from '@/contexts/auth-ceontext'
 import { useRouter } from 'next/navigation'
 import ModalEditCourt from '@/components/modalEditCourt'
 import ModalCreateCourt from '@/components/modalCreateCourt'
-import ModalCreateEstablishment from '@/components/modalCreateEstablishment'
 import ModalEditEstablishment from '@/components/modalEditEstablishment'
 import ModalCreateHorario from '@/components/modalCreateHorario'
 
@@ -34,40 +33,29 @@ export default function EstablishmentPage() {
 
   const { user } = useContext(AuthContext)
 
-  const [establishment, setEstablishment] = useState<EstablishmentWithCourts[]>(
-    [],
-  )
-  const [loading, setLoading] = useState(true)
+  const [establishment, setEstablishment] =
+    useState<EstablishmentWithCourts | null>(null)
   const [selectedCourt, setSelectedCourt] = useState<Court | null>(null)
   const [selectedEstablishment, setSelectedEstablishment] =
     useState<Establishment | null>(null)
 
-  const [selectedButtonEditEstablishment, setSelectedButtonEditEstablishment] =
-    useState<Establishment | null>(null)
-
-  const [
-    selectedButtonCreateEstablishment,
-    setSelectedButtonCreateEstablishment,
-  ] = useState<boolean | null>(false)
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false)
 
   const [selectCourtId, setSelectCourtId] = useState<string | null>(null)
 
-  function handleSelectedButtonCreateEstablishment() {
-    setSelectedButtonCreateEstablishment(true)
+  function handleEditEstablishment() {
+    setIsEditModalOpen(true)
   }
 
   function getEstablishment() {
     api
-      .get('/estabelecimento', {
+      .get(`/estabelecimento/${user?.id}`, {
         headers: {
           Authorization: `Bearer ${Cookies.get('sportshub@token')}`,
         },
       })
       .then((response) => {
-        setEstablishment(response.data.content)
-      })
-      .finally(() => {
-        setLoading(false)
+        setEstablishment(response.data)
       })
   }
 
@@ -81,42 +69,34 @@ export default function EstablishmentPage() {
   }, [user, router])
 
   useEffect(() => {
+    if (!user) return
+
     getEstablishment()
-  }, [])
+  }, [user])
+
   return (
     <div className="flex py-16 justify-center w-full min-h-[calc(100vh-11rem)]">
       <div className="text-[30px] w-full max-w-5xl gap-6 flex flex-col">
         <div className="flex justify-between flex-col gap-6">
           <div className="flex justify-between">
-            <p>Seja bem vindo dono do site</p>
+            <p>Seja bem vindo {user?.nome}</p>
+
             <button
-              onClick={handleSelectedButtonCreateEstablishment}
-              className="text-base bg-primary py-2 px-4 rounded-lg"
+              onClick={handleEditEstablishment}
+              className="flex gap-1 items-center text-base bg-blue-100 py-1 px-2 rounded-lg"
             >
               {' '}
-              Cadastrar estabelecimento
+              <Pencil className="size-4" />
+              Editar Estabelecimento
             </button>
           </div>
-          {establishment.length > 0 ? (
-            establishment.map((estab) => (
-              <EstablishmentContainer
-                establishment={estab}
-                setSelectedCourt={setSelectedCourt}
-                setSelectedEstablishment={setSelectedEstablishment}
-                setSelectedButtonEditEstablishment={
-                  setSelectedButtonEditEstablishment
-                }
-                selectCourtId={setSelectCourtId}
-                key={estab.id}
-              />
-            ))
-          ) : loading ? (
-            <div className=" flex justify-center items-center text-center ">
-              <LoaderCircle className="size-6 animate-spin" />
-            </div>
-          ) : (
-            <div className="text-center">Nenhum resultado encontrado</div>
-          )}
+          <EstablishmentContainer
+            establishment={establishment}
+            setSelectedCourt={setSelectedCourt}
+            setSelectedEstablishment={setSelectedEstablishment}
+            selectCourtId={setSelectCourtId}
+            key={establishment?.id}
+          />
         </div>
       </div>
       {selectedCourt && (
@@ -136,16 +116,10 @@ export default function EstablishmentPage() {
         />
       )}
 
-      {selectedButtonCreateEstablishment && (
-        <ModalCreateEstablishment
-          onClose={() => setSelectedButtonCreateEstablishment(null)}
-        />
-      )}
-
-      {selectedButtonEditEstablishment && (
+      {isEditModalOpen && establishment && (
         <ModalEditEstablishment
-          establishment={selectedButtonEditEstablishment}
-          onClose={() => setSelectedButtonEditEstablishment(null)}
+          establishment={establishment}
+          onClose={() => setIsEditModalOpen(false)}
         />
       )}
 

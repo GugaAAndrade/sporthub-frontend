@@ -27,16 +27,20 @@ export default function CreateStablishmentAccountPage() {
   function handleCreateAccount(event: React.FormEvent) {
     event.preventDefault()
 
-    api.post('/auth/register/estabelecimento', {
-      nome: name,
-      email,
-      senha: password,
-      cnpj,
-      contato: contact,
-      endereco: address,
-      cep,
-      descricao: description,
-    })
+    api
+      .post('/auth/register/estabelecimento', {
+        nome: name,
+        email,
+        senha: password,
+        cnpj,
+        contato: contact,
+        endereco: address,
+        cep,
+        descricao: description,
+      })
+      .then(() => {
+        router.push('/login-establishment')
+      })
   }
 
   return (
