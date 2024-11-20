@@ -210,7 +210,7 @@ export default function Profile() {
                 className="flex items-center gap-2 justify-between"
               >
                 <div className="flex gap-2 items-center">
-                  <div className="w-14 h-14 rounded-lg bg-blue-300">
+                  <div className="w-16 h-16 rounded-lg bg-blue-300">
                     <img
                       className="h-full rounded-lg w-[256px]"
                       src={
@@ -229,7 +229,10 @@ export default function Profile() {
                         )?.nome
                       }
                     </span>
-                    <span>{reserve.dataReserva}</span>
+                    <p className="flex gap-2">
+                      <span>Data: {reserve.dataReserva}</span>
+                      <span>Horario: {reserve.horario.horarioInicio}</span>
+                    </p>
                   </p>
                 </div>
 
@@ -243,7 +246,6 @@ export default function Profile() {
           )}
         </div>
 
-        {/* Seção de Grupos */}
         <div className="w-2/3 border border-black rounded-lg gap-4 flex flex-col p-4">
           <div className="flex justify-between items-center">
             <p className="text-lg">Grupos</p>

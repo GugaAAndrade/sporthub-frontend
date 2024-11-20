@@ -13,13 +13,11 @@ export interface Group {
   id: string
   nome: string
   descricao: string
-  // Adicione outros campos se necessário
 }
 
 export interface Jogo {
   id: string
   torneioId: string
-  // Outros campos se necessário
 }
 
 export interface Torneio {
@@ -31,21 +29,95 @@ export interface Torneio {
   jogos: Jogo[]
 }
 
+export interface Agendamento {
+  id: string
+  dataReserva: string
+  local: string
+  horario: {
+    horarioInicio: string
+    quadra: string
+  }
+  usuario: {
+    nome: string
+  }
+}
+
 export default function GroupPage() {
   const { id } = useParams()
 
   const [group, setGroup] = useState<Group | null>(null)
   const [participants, setParticipants] = useState<Usuario[]>([])
   const [tournaments, setTournaments] = useState<Torneio[]>([])
+  const [schedules, setSchedules] = useState<Agendamento[]>([])
+  const [establishmentNames, setEstablishmentNames] = useState<{
+    [key: string]: { courtName: string; establishmentName: string }
+  }>({})
 
   const [isModalAddUserOpen, setIsModalAddUserOpen] = useState(false)
   const [isCreateTournamentModalOpen, setIsCreateTournamentModalOpen] =
     useState(false)
 
+  function getGroupReserves() {
+    api
+      .get(`/reserva/grupo/${id}`, {
+        headers: {
+          Authorization: `Bearer ${Cookies.get('sportshub@token')}`,
+        },
+      })
+      .then((response) => {
+        setSchedules(response.data)
+        fetchEstablishmentNames(
+          response.data.map((s: Agendamento) => s.horario.quadra),
+        )
+      })
+  }
+
+  function fetchEstablishmentNames(courtIds: string[]) {
+    const uniqueCourtIds = Array.from(new Set(courtIds))
+    const promises = uniqueCourtIds.map((courtId) =>
+      api
+        .get(`/quadra/${courtId}`, {
+          headers: {
+            Authorization: `Bearer ${Cookies.get('sportshub@token')}`,
+          },
+        })
+        .then((response) => ({
+          courtId,
+          courtName: response.data.nome, // Nome da quadra
+          establishmentName: response.data.estabelecimento.nome, // Nome do estabelecimento
+        }))
+        .catch((error) => {
+          console.error(
+            `Erro ao buscar informações para quadra ${courtId}:`,
+            error,
+          )
+          return {
+            courtId,
+            courtName: 'Desconhecido',
+            establishmentName: 'Desconhecido',
+          }
+        }),
+    )
+
+    Promise.all(promises).then((results) => {
+      const names = results.reduce(
+        (acc, { courtId, courtName, establishmentName }) => ({
+          ...acc,
+          [courtId]: { courtName, establishmentName },
+        }),
+        {},
+      )
+      setEstablishmentNames(names)
+    })
+  }
+
+  useEffect(() => {
+    getGroupReserves()
+  }, [id])
+
   useEffect(() => {
     if (!id) return
 
-    // Buscar detalhes do grupo
     api
       .get(`/grupo/${id}`, {
         headers: {
@@ -58,7 +130,6 @@ export default function GroupPage() {
 
         const usersIds = groupData.usuarios
 
-        // Buscar participantes do grupo
         const participantsPromises = usersIds.map((userId: string) =>
           api.get(`/usuario/${userId}`, {
             headers: {
@@ -76,7 +147,6 @@ export default function GroupPage() {
             console.error('Erro ao buscar participantes:', error)
           })
 
-        // Buscar torneios do grupo
         api
           .get(`/torneio`, {
             headers: {
@@ -89,6 +159,20 @@ export default function GroupPage() {
           })
           .catch((error) => {
             console.error('Erro ao buscar torneios:', error)
+          })
+
+        api
+          .get(`/reserva/grupo/${id}`, {
+            headers: {
+              Authorization: `Bearer ${Cookies.get('sportshub@token')}`,
+            },
+          })
+          .then((response) => {
+            const agendamentosData = response.data
+            setSchedules(agendamentosData)
+          })
+          .catch((error) => {
+            console.error('Erro ao buscar agendamentos:', error)
           })
       })
       .catch((error) => {
@@ -114,7 +198,6 @@ export default function GroupPage() {
         },
       })
       .then(() => {
-        // Remover o torneio do estado local
         setTournaments((prevTournaments) =>
           prevTournaments.filter((t) => t.id !== tournamentId),
         )
@@ -167,7 +250,6 @@ export default function GroupPage() {
                   >
                     <div className="flex gap-2 items-center">
                       <div className="w-14 h-14 rounded-full bg-gray-300 flex items-center justify-center">
-                        {/* Pode adicionar uma imagem ou ícone representativo do participante */}
                         <span className="text-white text-xl">
                           {participant.nome.charAt(0)}
                         </span>
@@ -188,7 +270,6 @@ export default function GroupPage() {
               )}
             </div>
 
-            {/* Seção de Torneios */}
             <div className="w-2/3 border border-black rounded-lg gap-4 flex flex-col p-4">
               <div className="flex justify-between items-center">
                 <p className="text-lg">Torneios</p>
@@ -218,14 +299,12 @@ export default function GroupPage() {
                       </button>
                     </div>
                     <p>{tournament.descricao}</p>
-                    {/* Seção de Jogos */}
                     <div className="mt-2">
                       <p className="font-semibold">Jogos:</p>
                       {tournament.jogos && tournament.jogos.length > 0 ? (
                         tournament.jogos.map((jogo) => (
                           <div key={jogo.id} className="ml-4">
                             <p>Jogo ID: {jogo.id}</p>
-                            {/* Outros detalhes do jogo */}
                           </div>
                         ))
                       ) : (
@@ -236,6 +315,31 @@ export default function GroupPage() {
                 ))
               ) : (
                 <p>Não há torneios neste grupo.</p>
+              )}
+            </div>
+
+            <div className="w-2/3 border border-black rounded-lg gap-4 flex flex-col p-4">
+              <p className="text-lg">Agendamentos</p>
+              {schedules.length > 0 ? (
+                schedules.map((schedule) => (
+                  <div key={schedule.id} className="border p-4 rounded-lg mb-4">
+                    <p>
+                      Estabelecimento:{' '}
+                      {
+                        establishmentNames[schedule.horario.quadra]
+                          ?.establishmentName
+                      }
+                    </p>
+                    <p>
+                      Quadra:{' '}
+                      {establishmentNames[schedule.horario.quadra]?.courtName}
+                    </p>
+                    <p>Data: {schedule.dataReserva}</p>
+                    <p>Horário: {schedule.horario.horarioInicio}</p>
+                  </div>
+                ))
+              ) : (
+                <p>Não há agendamentos neste grupo.</p>
               )}
             </div>
           </>

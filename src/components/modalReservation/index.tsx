@@ -1,3 +1,5 @@
+'use client'
+
 import { AuthContext } from '@/contexts/auth-ceontext'
 import { api } from '@/services/api'
 import { X } from 'lucide-react'
@@ -33,6 +35,11 @@ export interface Court {
   capacidade: number
 }
 
+interface Group {
+  id: string
+  nome: string
+}
+
 interface ReservationModalProps {
   court: Court
   onClose: () => void
@@ -43,10 +50,11 @@ export default function ReservationModal({
   onClose,
 }: ReservationModalProps) {
   const { user } = useContext(AuthContext)
-
   const [selectedHorarios, setSelectedHorarios] = useState<string[]>([])
   const [inputData, setInputData] = useState('')
   const [schedule, setSchedule] = useState<ScheduleItem[]>([])
+  const [userGroups, setUserGroups] = useState<Group[]>([])
+  const [selectedGroup, setSelectedGroup] = useState<string | null>(null)
 
   const handleHorarioClick = (horarioId: string) => {
     if (selectedHorarios.includes(horarioId)) {
@@ -63,7 +71,30 @@ export default function ReservationModal({
     return selectedDate.getDay()
   }
 
+  // Função para buscar os grupos do usuário
+  function getUserGroups() {
+    if (!user) return
+
+    api
+      .get(`/grupo`, {
+        headers: {
+          Authorization: `Bearer ${Cookies.get('sportshub@token')}`,
+        },
+      })
+      .then((response) => {
+        setUserGroups(response.data.content)
+      })
+      .catch((error) => {
+        console.error('Erro ao buscar grupos do usuário:', error)
+      })
+  }
+
   useEffect(() => {
+    getUserGroups() // Chama a função para buscar os grupos assim que o componente é montado
+  }, [user])
+
+  useEffect(() => {
+    // Buscar agendamentos existentes para a quadra
     api
       .get(`/reserva/quadra/${court.id}`, {
         headers: {
@@ -87,6 +118,7 @@ export default function ReservationModal({
           dataReserva: inputData,
           ativa: true,
           usuarioId: user?.id,
+          grupoId: selectedGroup, // Inclui o ID do grupo se selecionado
         },
         {
           headers: {
@@ -115,7 +147,7 @@ export default function ReservationModal({
     : []
 
   return (
-    <div className="fixed inset-0 flex justify-center items-center bg-black/50 ">
+    <div className="fixed inset-0 flex justify-center items-center bg-black/50">
       <div className="p-6 bg-white max-w-xl w-full rounded-lg">
         <div className="flex justify-between">
           <p className="text-primary text-2xl">Reserve sua quadra</p>
@@ -123,7 +155,7 @@ export default function ReservationModal({
         </div>
 
         <p className="text-sm text-gray-400">Quadra</p>
-        <p className="text-xl ">{court.nome}</p>
+        <p className="text-xl">{court.nome}</p>
         <p className="text-sm text-gray-400">Valor</p>
         <p className="text-xl">
           {new Intl.NumberFormat('pt-BR', {
@@ -132,18 +164,33 @@ export default function ReservationModal({
           }).format(court.valorHora)}
           /hora
         </p>
+
         <p className="text-sm text-gray-400">Data</p>
         <input
           type="date"
-          className="text-xl"
+          className="text-xl border rounded-lg p-2"
           value={inputData}
           onChange={(event) => setInputData(event.target.value)}
         />
 
+        <p className="text-sm text-gray-400">Selecione um grupo (opcional)</p>
+        <select
+          className="w-1/3 border rounded-lg p-2"
+          value={selectedGroup || ''}
+          onChange={(e) => setSelectedGroup(e.target.value || null)}
+        >
+          <option value="">Sem grupo</option>
+          {userGroups?.map((group) => (
+            <option key={group.id} value={group.id}>
+              {group.nome}
+            </option>
+          ))}
+        </select>
+
         {inputData ? (
           filteredHorarios.length > 0 ? (
             <div>
-              <p className="text-sm text-gray-400">Horarios</p>
+              <p className="text-sm text-gray-400">Horários</p>
               <div className="flex gap-2 overflow-auto justify-center items-center flex-wrap">
                 {filteredHorarios
                   .sort((a, b) =>
@@ -169,12 +216,12 @@ export default function ReservationModal({
             </div>
           ) : (
             <p className="text-sm text-gray-400">
-              Nao ha horarios disponiveis para este dia.
+              Não há horários disponíveis para este dia.
             </p>
           )
         ) : (
           <p className="text-sm text-gray-400">
-            Selecione uma data para ver os Horarios
+            Selecione uma data para ver os horários.
           </p>
         )}
 
