@@ -44,7 +44,7 @@ export default function LoginPage() {
     <>
       <div className="h-screen flex w-full">
         <div className="w-1/2 flex justify-center items-center flex-col gap-6">
-          <div className="">
+          <div>
             <button
               onClick={goToHomePage}
               className="flex gap-2 justify-center "
@@ -66,7 +66,7 @@ export default function LoginPage() {
 
           <div className="w-2/3">
             <p className="text-4xl">SEJA BEM-VINDO</p>
-            <p>entre com sua conta para continuar</p>
+            <p>entre com sua conta de usuario para continuar</p>
           </div>
 
           <div className="w-2/3">
@@ -94,26 +94,8 @@ export default function LoginPage() {
               </button>
             </form>
           </div>
-          {/* <div className="flex items-center justify-center gap-4 w-2/3">
-            <div className="h-px w-full bg-black"></div>
-            ou
-            <div className="h-px w-full  bg-black"></div>
-          </div> */}
-          {/* <div className="w-2/3">
-            <button className="flex w-full p-4 border-2 rounded-lg items-center justify-center text-lg gap-2">
-              <Image
-                src="/google_icon.svg"
-                alt="logo"
-                width={24}
-                height={24}
-                quality={100}
-                priority
-              />
-              Entrar com Google
-            </button>
-          </div> */}
 
-          <div className="flex flex-col gap-4 items-center">
+          <div className="flex flex-col gap-2 items-center">
             <div>
               Nao tem conta?{' '}
               <button onClick={goToCreateAccountPage} className="text-blue-600">

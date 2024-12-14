@@ -291,14 +291,11 @@ export default function GroupPage() {
       ]
     }
 
-    // Create teams of 2 (or 1 if odd number)
+    // Create teams of 4 (or fewer if not enough participants)
     const teams: Team[] = []
     let teamId = 1
-    for (let i = 0; i < participantsCopy.length; i += 2) {
-      const teamMembers = [participantsCopy[i]]
-      if (i + 1 < participantsCopy.length) {
-        teamMembers.push(participantsCopy[i + 1])
-      }
+    for (let i = 0; i < participantsCopy.length; i += 4) {
+      const teamMembers = participantsCopy.slice(i, i + 4)
       teams.push({
         id: teamId++,
         members: teamMembers,
@@ -695,30 +692,37 @@ export default function GroupPage() {
                   <thead>
                     <tr>
                       <th className="px-4 py-2">Jogador</th>
+                      <th className="px-4 py-2">Taxa de Vitória (%)</th>
                       <th className="px-4 py-2">Gols Marcados</th>
                       <th className="px-4 py-2">Partidas Jogadas</th>
                       <th className="px-4 py-2">Partidas Vencidas</th>
-                      <th className="px-4 py-2">Taxa de Vitória (%)</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {participants.map((player) => (
-                      <tr key={player.id} className="text-center">
-                        <td className="border px-4 py-2">{player.nome}</td>
-                        <td className="border px-4 py-2">
-                          {playerStats[player.id]?.goalsScored || 0}
-                        </td>
-                        <td className="border px-4 py-2">
-                          {playerStats[player.id]?.matchesPlayed || 0}
-                        </td>
-                        <td className="border px-4 py-2">
-                          {playerStats[player.id]?.matchesWon || 0}
-                        </td>
-                        <td className="border px-4 py-2">
-                          {playerStats[player.id]?.winRate || 0}%
-                        </td>
-                      </tr>
-                    ))}
+                    {participants
+                      .sort((a, b) => {
+                        // Sort players by win rate
+                        return (
+                          playerStats[b.id].winRate - playerStats[a.id].winRate
+                        )
+                      })
+                      .map((player) => (
+                        <tr key={player.id} className="text-center">
+                          <td className="border px-4 py-2">{player.nome}</td>
+                          <td className="border px-4 py-2">
+                            {playerStats[player.id]?.winRate || 0}%
+                          </td>
+                          <td className="border px-4 py-2">
+                            {playerStats[player.id]?.goalsScored || 0}
+                          </td>
+                          <td className="border px-4 py-2">
+                            {playerStats[player.id]?.matchesPlayed || 0}
+                          </td>
+                          <td className="border px-4 py-2">
+                            {playerStats[player.id]?.matchesWon || 0}
+                          </td>
+                        </tr>
+                      ))}
                   </tbody>
                 </table>
               </div>
@@ -793,8 +797,13 @@ export default function GroupPage() {
                         Quadra:{' '}
                         {establishmentNames[schedule.horario.quadra]?.courtName}
                       </p>
-                      <p>Data: {schedule.dataReserva}</p>
-                      <p>Horário: {schedule.horario.horarioInicio}</p>
+                      <p>
+                        Data:{' '}
+                        {schedule.dataReserva.split('-').reverse().join('/')}
+                      </p>
+                      <p>
+                        Horário: {schedule.horario.horarioInicio.slice(0, 5)}
+                      </p>
                     </div>
                   </div>
                 ))

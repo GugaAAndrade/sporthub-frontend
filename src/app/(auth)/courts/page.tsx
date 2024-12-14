@@ -81,6 +81,10 @@ export default function CourtsPage() {
             handleSetSport={setSportChoice}
             sport="Basquete"
           ></FilterTag>
+          <FilterTag
+            handleSetSport={setSportChoice}
+            sport="Beach Tennis"
+          ></FilterTag>
         </div>
         <div className="flex flex-col w-full gap-6">
           {filteredCourts().length > 0 ? (

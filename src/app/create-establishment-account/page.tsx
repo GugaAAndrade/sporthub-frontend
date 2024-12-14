@@ -21,7 +21,7 @@ export default function CreateStablishmentAccountPage() {
   }
 
   const goToLoginPage = () => {
-    router.push('/login')
+    router.push('/login-establishment')
   }
 
   function handleCreateAccount(event: React.FormEvent) {

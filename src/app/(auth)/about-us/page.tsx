@@ -24,7 +24,7 @@ export default function EstabelecimentosPage() {
               github="https://github.com/GugaAAndrade"
               instagram="https://www.instagram.com/guga_andrade__/"
               linkedin="https://www.linkedin.com/in/guga-andrade/"
-              name="Gustavo"
+              name="Guga"
               role="Frontend"
             />
             <DeveloperCard

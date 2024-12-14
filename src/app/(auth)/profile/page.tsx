@@ -230,8 +230,13 @@ export default function Profile() {
                       }
                     </span>
                     <p className="flex gap-2">
-                      <span>Data: {reserve.dataReserva}</span>
-                      <span>Horario: {reserve.horario.horarioInicio}</span>
+                      <span>
+                        Data:{' '}
+                        {reserve.dataReserva.split('-').reverse().join('/')}
+                      </span>
+                      <span>
+                        Horario: {reserve.horario.horarioInicio.slice(0, 5)}
+                      </span>
                     </p>
                   </p>
                 </div>
